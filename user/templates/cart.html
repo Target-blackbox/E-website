@@ -1,0 +1,15 @@
+<!-- auth/templates/auth/cart.html -->
+
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h1>Your Cart</h1>
+<ul>
+    {% for cart_product in cart.cartproduct_set.all %}
+    <li>{{ cart_product.product.name }} - Quantity: {{ cart_product.quantity }}
+        <a href="{% url 'cart:remove_from_cart' cart_product.product.id %}">Remove</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

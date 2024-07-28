@@ -1,0 +1,15 @@
+<!-- templates/home/index.html -->
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">Welcome to My Website!</h1>
+        <p class="lead">This is a simple Django project with a home page.</p>
+        <hr class="my-4">
+        <p>Explore our products or learn about our features.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'products' %}" role="button">View Products</a>
+    </div>
+</div>
+{% endblock %}

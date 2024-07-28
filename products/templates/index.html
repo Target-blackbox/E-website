@@ -1,0 +1,70 @@
+<!-- products/templates/products/index.html -->
+
+{% extends 'base.html' %}
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top product-image" src="{{ product.image_url }}" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">Rs {{ product.price }}</p>
+                <p class="card-text">Stock: {{ product.stock }}</p>
+                <a href="#" class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">Add to Cart</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Custom JS for Loading Screen -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const images = document.querySelectorAll('.product-image');
+        let imagesLoaded = 0;
+
+        images.forEach(image => {
+            if (image.complete) {
+                imagesLoaded++;
+            } else {
+                image.addEventListener('load', () => {
+                    imagesLoaded++;
+                    if (imagesLoaded === images.length) {
+                        document.getElementById('loading-screen').style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        if (imagesLoaded === images.length) {
+            document.getElementById('loading-screen').style.display = 'none';
+        }
+    });
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            
+            fetch(`/user/add_to_cart/${productId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Item added to cart!');
+                } else {
+                    alert('Error adding item to cart.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
